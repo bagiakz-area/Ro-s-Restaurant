@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservation Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="reserve2.css" />
+    <link rel="icon" href="assets/image/LOGOK.svg" />
+  </head>
+  <body>
+    <div class="form-wrap">
+      <h1 class="form-title">ROS RESERVATION</h1>
+
+      <div class="field-row">
+        <div class="field-group">
+          <input type="text" id="fname" placeholder="First name" />
+        </div>
+        <div class="field-group">
+          <input type="text" id="lname" placeholder="Last name" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <input type="email" id="email" placeholder="Email" />
+        </div>
+        <div class="field-group">
+          <input type="tel" id="phone" placeholder="Phone" />
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <input type="text" id="subject" placeholder="Subject" />
+      </div>
+
+      <div class="field-group full">
+        <textarea id="message" placeholder="Write a message"></textarea>
+      </div>
+
+      <a href="../index.html" class="btn-submit">SUBMIT</a>
+    </div>
+  </body>
+</html>

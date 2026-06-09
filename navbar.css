@@ -1,0 +1,148 @@
+    /* ══════════════════════════════════
+    NAVBAR — Sticky Transparent
+    ══════════════════════════════════ */
+
+
+    .nav-brand-link {
+        display: inline-block;
+        position: relative;
+        padding-bottom: 3px;
+    }
+
+    .nav-brand-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #CFC6B5;
+        transition: width 0.35s ease;
+    }
+
+    .nav-brand-link:hover::after {
+        width: 100%;
+        background: #CFC6B5;
+    }
+
+    .nav-bar {
+        background-color: #CFC6B5;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: #CFC6B5;
+          background: rgba(255, 255, 255, 0.2); /* putih transparan */
+            backdrop-filter: blur(10px);          /* efek glass/blur */
+            -webkit-backdrop-filter: blur(10px);  /* untuk Safari */
+            border-radius: 0 0 50px 50px;
+            border: 1px solid #CFC6B5;
+            box-shadow: 0 4px 20px #CFC6B5;
+            padding: 1px 30px;
+    }
+
+    /* State scrolled: glass morphism elegan */
+    .nav-bar.scrolled {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+    padding: 12px 0;
+    }
+
+    /* Jika background halaman gelap (navy), pakai versi gelap */
+    .nav-bar.scrolled.dark-bg {
+    background: rgba(20, 36, 90, 0.72);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Link nav */
+    .nav-link-item {
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 3px;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-link-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #CFC6B5;
+    transition: width 0.35s ease;
+    }
+
+    .nav-link-item:hover {
+    color: #c8a35e;
+    opacity: 1;
+    }
+
+    .nav-link-item:hover::after {
+    width: 100%;
+    }
+
+    /* Logo navbar */
+    .nav-brand img {
+    height: 70px;
+    transition: height 0.35s ease, opacity 0.3s ease;
+    }
+
+    .nav-bar.scrolled .nav-brand img {
+    height: 40px;
+    }
+
+    /* Animasi masuk saat halaman load */
+    @keyframes navFadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }
+
+    .nav-bar {
+    animation: navFadeDown 0.7s ease forwards;
+    }
+
+    /* Aktif link (section yang sedang dilihat) */
+    .nav-link-item.active {
+    color: #FFFF;
+    }
+
+    .nav-link-item.active::after {
+    width: 100%;
+    }
+
+    /* ══ Responsive ══ */
+    @media (max-width: 767px) {
+    .nav-bar {
+        padding: 14px 16px;
+    }
+
+    .nav-bar.scrolled {
+        padding: 10px 16px;
+    }
+
+    .nav-brand img {
+        height: 38px;
+    }
+
+    .nav-bar.scrolled .nav-brand img {
+        height: 30px;
+    }
+
+    .nav-link-item {
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+    }
+    }

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserve - Ro's Restaurant</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="reserve.css" />
+    <link rel="icon" href="assets/image/LOGOK.svg" />
+  </head>
+  <body>
+    <section class="reserve">
+      <div class="container">
+        <div class="row">
+
+          <!-- Banner -->
+          <div class="col-md-6 offset-md-3 banner">
+            <img src="assets/image/LOGOK.svg" alt="logo" />
+            <h1>ROS RESERVATION HERE</h1>
+            <p>Main Reserve</p>
+          </div>
+
+          <!-- Form Card -->
+          <div class="col-md-6 offset-md-3 form-card">
+
+            <!-- Stepper -->
+            <div class="stepper">
+              <div class="step-item active" id="step-ind-1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Reservation</div>
+              </div>
+              <div class="step-item" id="step-ind-2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Information</div>
+              </div>
+              <div class="step-item" id="step-ind-3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmation</div>
+              </div>
+            </div>
+
+            <!-- Panels -->
+            <div class="modal-body">
+
+              <!-- Step 1: Reservation -->
+              <div class="step-panel active" id="panel-1">
+                <div class="select-grid">
+                  <div class="select-wrap">
+                    <span class="icon">👤</span>
+                    <select id="adults">
+                      <option>1 Adult</option>
+                      <option selected>2 Adults</option>
+                      <option>3 Adults</option>
+                      <option>4 Adults</option>
+                      <option>5 Adults</option>
+                      <option>6 Adults</option>
+                    </select>
+                  </div>
+                  <div class="select-wrap">
+                    <span class="icon">👶</span>
+                    <select id="children">
+                      <option selected>0 Children</option>
+                      <option>1 Child</option>
+                      <option>2 Children</option>
+                      <option>3 Children</option>
+                    </select>
+                  </div>
+                  <div class="select-wrap">
+                    <span class="icon">📅</span>
+                    <select id="date"></select>
+                  </div>
+                  <div class="select-wrap">
+                    <span class="icon">🕐</span>
+                    <select id="time">
+                      <option>7:00 am</option>
+                      <option>8:00 am</option>
+                      <option>9:00 am</option>
+                      <option>10:00 am</option>
+                      <option>11:00 am</option>
+                      <option>12:00 pm</option>
+                      <option>1:00 pm</option>
+                      <option>2:00 pm</option>
+                      <option>3:00 pm</option>
+                      <option selected>4:00 pm</option>
+                      <option>5:00 pm</option>
+                      <option>6:00 pm</option>
+                      <option>7:00 pm</option>
+                      <option>8:00 pm</option>
+                      <option>9:00 pm</option>
+                      <option>10:00 pm</option>
+                      <option>11:00 pm</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="note-box">
+                  <p>
+                    Special requests are not guaranteed and are subject to
+                    availability and restaurant discretion. Notes stating an
+                    alternative timing or party-size will not be accommodated.
+                  </p>
+                </div>
+                <div class="checkbox-wrap">
+                  <input type="checkbox" id="agree" />
+                  <label for="agree">
+                    I have read and agree to the above terms and conditions.
+                  </label>
+                </div>
+                <button class="btn-next" id="btn-next-1">Next</button>
+              </div>
+
+              <!-- Step 2: Information -->
+              <div class="step-panel" id="panel-2">
+                <div class="input-row">
+                  <div class="input-group-custom">
+                    <label>First Name</label>
+                    <input type="text" id="fname" placeholder="Ucup" />
+                  </div>
+                  <div class="input-group-custom">
+                    <label>Last Name</label>
+                    <input type="text" id="lname" placeholder="Simajuntak" />
+                  </div>
+                </div>
+                <div class="input-group-custom">
+                  <label>Email</label>
+                  <input type="email" id="email" placeholder="ucup@example.com" />
+                </div>
+                <div class="input-group-custom">
+                  <label>Phone Number</label>
+                  <input type="tel" id="phone" placeholder="+62 8xx xxxx xxxx" />
+                </div>
+                <div class="input-group-custom">
+                  <label>Special Request (optional)</label>
+                  <textarea
+                    id="notes"
+                    rows="3"
+                    placeholder="Allergies, special occasion, seating preference..."
+                  ></textarea>
+                </div>
+                <button class="btn-back" id="btn-back-2">← Back</button>
+                <button class="btn-next enabled" id="btn-next-2">Next</button>
+              </div>
+
+              <!-- Step 3: Confirmation -->
+              <div class="step-panel" id="panel-3">
+                <p class="confirm-title">Review Your Booking</p>
+                <p class="confirm-sub">Please confirm your reservation details below.</p>
+                <div class="confirm-card">
+                  <div class="confirm-row">
+                    <span>Date</span><span id="c-date">—</span>
+                  </div>
+                  <div class="confirm-row">
+                    <span>Time</span><span id="c-time">—</span>
+                  </div>
+                  <div class="confirm-row">
+                    <span>Guests</span><span id="c-guests">—</span>
+                  </div>
+                  <div class="confirm-row">
+                    <span>Name</span><span id="c-name">—</span>
+                  </div>
+                  <div class="confirm-row">
+                    <span>Email</span><span id="c-email">—</span>
+                  </div>
+                  <div class="confirm-row">
+                    <span>Phone</span><span id="c-phone">—</span>
+                  </div>
+                  <div class="confirm-row" id="c-notes-row">
+                    <span>Request</span><span id="c-notes">—</span>
+                  </div>
+                </div>
+                <button class="btn-back" id="btn-back-3">← Back</button>
+                <button class="btn-confirm" id="btn-confirm">Confirm Reservation</button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="reserve.js"></script>
+  </body>
+</html>

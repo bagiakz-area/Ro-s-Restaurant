@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserve Table – Ro's Restaurant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --beige: #f5f1eb;
+        --beige-dark: #e8e2d9;
+        --navy: #1a3060;
+        --gold: #c9a84c;
+        --gold-muted: #b0a591;
+        --text: #2a2a2a;
+        --muted: #8a8a8a;
+        --border: #d8d0c4;
+        --white: #ffffff;
+        --step-active: #c9a84c;
+        --step-done: #c9a84c;
+        --step-idle: #d0ccc6;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        background: var(--beige);
+        font-family: 'Montserrat', sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+      }
+
+      .modal {
+        background: var(--white);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 560px;
+        box-shadow: 0 20px 60px rgba(26, 48, 96, 0.12);
+        overflow: hidden;
+      }
+
+      /* ── Stepper ── */
+      .stepper {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 32px 40px 24px;
+        gap: 0;
+        position: relative;
+      }
+
+      .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background: var(--step-idle);
+        z-index: 0;
+        transition: background 0.4s ease;
+      }
+
+      .step-item.done:not(:last-child)::after,
+      .step-item.active:not(:last-child)::after {
+        background: var(--step-done);
+      }
+
+      .step-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        background: var(--step-idle);
+        color: var(--white);
+        position: relative;
+        z-index: 2;
+        transition: background 0.4s ease, transform 0.3s ease;
+      }
+
+      .step-item.active .step-circle {
+        background: var(--step-active);
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px rgba(201, 168, 76, 0.4);
+      }
+
+      .step-item.done .step-circle {
+        background: var(--step-done);
+      }
+
+      .step-label {
+        margin-top: 8px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+      }
+
+      .step-item.active .step-label { color: var(--step-active); }
+      .step-item.done .step-label { color: var(--step-done); }
+
+      /* ── Body ── */
+      .modal-body {
+        padding: 8px 32px 32px;
+      }
+
+      /* ── Panel (step content) ── */
+      .step-panel { display: none; }
+      .step-panel.active { display: block; }
+
+      /* ── Grid selects ── */
+      .select-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .select-wrap {
+        position: relative;
+      }
+
+      .select-wrap .icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 1rem;
+        pointer-events: none;
+      }
+
+      .select-wrap select {
+        width: 100%;
+        padding: 13px 36px 13px 40px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        background: var(--white);
+        appearance: none;
+        cursor: pointer;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .select-wrap select:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+      }
+
+      .select-wrap::after {
+        content: '▾';
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 0.75rem;
+        pointer-events: none;
+      }
+
+      /* ── Note box ── */
+      .note-box {
+        background: #f7f5f2;
+        border-radius: 8px;
+        padding: 16px 18px;
+        margin: 18px 0;
+      }
+
+      .note-box p {
+        font-size: 0.78rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* ── Checkbox ── */
+      .checkbox-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+
+      .checkbox-wrap input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--gold);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .checkbox-wrap label {
+        font-size: 0.78rem;
+        color: var(--text);
+        cursor: pointer;
+        line-height: 1.5;
+      }
+
+      /* ── Buttons ── */
+      .btn-next {
+        width: 100%;
+        padding: 14px;
+        background: var(--border);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: not-allowed;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      }
+
+      .btn-next.enabled {
+        background: var(--navy);
+        cursor: pointer;
+      }
+
+      .btn-next.enabled:hover {
+        background: #122448;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(26, 48, 96, 0.25);
+      }
+
+      .btn-next.enabled:active {
+        transform: translateY(0);
+      }
+
+      .btn-back {
+        width: 100%;
+        padding: 13px;
+        background: transparent;
+        color: var(--muted);
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-bottom: 10px;
+        transition: border-color 0.25s ease, color 0.25s ease;
+      }
+
+      .btn-back:hover {
+        border-color: var(--navy);
+        color: var(--navy);
+      }
+
+      /* ── Step 2: Information ── */
+      .input-group-custom {
+        margin-bottom: 14px;
+      }
+
+      .input-group-custom label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .input-group-custom input,
+      .input-group-custom textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        color: var(--text);
+        background: var(--white);
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        resize: none;
+      }
+
+      .input-group-custom input:focus,
+      .input-group-custom textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      /* ── Step 3: Confirmation ── */
+      .confirm-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--navy);
+        text-align: center;
+        margin-bottom: 6px;
+      }
+
+      .confirm-sub {
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .confirm-card {
+        background: var(--beige);
+        border-radius: 10px;
+        padding: 20px 22px;
+        margin-bottom: 20px;
+      }
+
+      .confirm-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.82rem;
+      }
+
+      .confirm-row:last-child { border-bottom: none; }
+
+      .confirm-row span:first-child {
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .confirm-row span:last-child {
+        color: var(--navy);
+        font-weight: 600;
+      }
+
+      .btn-confirm {
+        width: 100%;
+        padding: 14px;
+        background: var(--gold);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      }
+
+      .btn-confirm:hover {
+        background: #b8943e;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(201, 168, 76, 0.35);
+      }
+
+      /* ── Success ── */
+      .success-wrap {
+        text-align: center;
+        padding: 20px 0 10px;
+      }
+
+      .success-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(201, 168, 76, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 1.8rem;
+      }
+
+      .success-wrap h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.7rem;
+        color: var(--navy);
+        margin-bottom: 8px;
+      }
+
+      .success-wrap p {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 320px;
+        margin: 0 auto 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="modal">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step-item active" id="step-ind-1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Reservation</div>
+        </div>
+        <div class="step-item" id="step-ind-2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Information</div>
+        </div>
+        <div class="step-item" id="step-ind-3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Confirmation</div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- ── Step 1: Reservation ── -->
+        <div class="step-panel active" id="panel-1">
+          <div class="select-grid">
+            <div class="select-wrap">
+              <span class="icon">👤</span>
+              <select id="adults">
+                <option>1 Adult</option>
+                <option selected>2 Adults</option>
+                <option>3 Adults</option>
+                <option>4 Adults</option>
+                <option>5 Adults</option>
+                <option>6 Adults</option>
+              </select>
+            </div>
+            <div class="select-wrap">
+              <span class="icon">👶</span>
+              <select id="children">
+                <option selected>0 Children</option>
+                <option>1 Child</option>
+                <option>2 Children</option>
+                <option>3 Children</option>
+              </select>
+            </div>
+            <div class="select-wrap">
+              <span class="icon">📅</span>
+              <select id="date"></select>
+            </div>
+            <div class="select-wrap">
+              <span class="icon">🕐</span>
+              <select id="time">
+                <option>7:00 am</option>
+                <option>8:00 am</option>
+                <option>9:00 am</option>
+                <option>10:00 am</option>
+                <option>11:00 am</option>
+                <option>12:00 pm</option>
+                <option>1:00 pm</option>
+                <option>2:00 pm</option>
+                <option>3:00 pm</option>
+                <option selected>4:00 pm</option>
+                <option>5:00 pm</option>
+                <option>6:00 pm</option>
+                <option>7:00 pm</option>
+                <option>8:00 pm</option>
+                <option>9:00 pm</option>
+                <option>10:00 pm</option>
+                <option>11:00 pm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <p>Special requests are not guaranteed and are subject to availability and restaurant discretion. Notes stating an alternative timing or party-size will not be accommodated.</p>
+          </div>
+
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="agree" />
+            <label for="agree">I have read and agree to the above terms and conditions.</label>
+          </div>
+
+          <button class="btn-next" id="btn-next-1">Next</button>
+        </div>
+
+        <!-- ── Step 2: Information ── -->
+        <div class="step-panel" id="panel-2">
+          <div class="input-row">
+            <div class="input-group-custom">
+              <label>First Name</label>
+              <input type="text" id="fname" placeholder="John" />
+            </div>
+            <div class="input-group-custom">
+              <label>Last Name</label>
+              <input type="text" id="lname" placeholder="Doe" />
+            </div>
+          </div>
+          <div class="input-group-custom">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="john@example.com" />
+          </div>
+          <div class="input-group-custom">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+62 8xx xxxx xxxx" />
+          </div>
+          <div class="input-group-custom">
+            <label>Special Request (optional)</label>
+            <textarea id="notes" rows="3" placeholder="Allergies, special occasion, seating preference..."></textarea>
+          </div>
+          <button class="btn-back" id="btn-back-2">← Back</button>
+          <button class="btn-next enabled" id="btn-next-2">Next</button>
+        </div>
+
+        <!-- ── Step 3: Confirmation ── -->
+        <div class="step-panel" id="panel-3">
+          <p class="confirm-title">Review Your Booking</p>
+          <p class="confirm-sub">Please confirm your reservation details below.</p>
+          <div class="confirm-card">
+            <div class="confirm-row"><span>Date</span><span id="c-date">—</span></div>
+            <div class="confirm-row"><span>Time</span><span id="c-time">—</span></div>
+            <div class="confirm-row"><span>Guests</span><span id="c-guests">—</span></div>
+            <div class="confirm-row"><span>Name</span><span id="c-name">—</span></div>
+            <div class="confirm-row"><span>Email</span><span id="c-email">—</span></div>
+            <div class="confirm-row"><span>Phone</span><span id="c-phone">—</span></div>
+            <div class="confirm-row" id="c-notes-row"><span>Request</span><span id="c-notes">—</span></div>
+          </div>
+          <button class="btn-back" id="btn-back-3">← Back</button>
+          <button class="btn-confirm" id="btn-confirm">Confirm Reservation</button>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      // ── Populate date select ──
+      (function () {
+        const sel = document.getElementById('date');
+        const now = new Date();
+        for (let i = 0; i < 60; i++) {
+          const d = new Date(now);
+          d.setDate(now.getDate() + i);
+          const opt = document.createElement('option');
+          opt.value = d.toISOString().split('T')[0];
+          opt.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          if (i === 0) opt.selected = true;
+          sel.appendChild(opt);
+        }
+      })();
+
+      // ── Step 1: enable Next when checkbox checked ──
+      const agree = document.getElementById('agree');
+      const btnNext1 = document.getElementById('btn-next-1');
+      agree.addEventListener('change', () => {
+        btnNext1.classList.toggle('enabled', agree.checked);
+        btnNext1.style.cursor = agree.checked ? 'pointer' : 'not-allowed';
+      });
+
+      // ── Navigate steps ──
+      function goTo(step) {
+        document.querySelectorAll('.step-panel').forEach((p, i) => {
+          p.classList.toggle('active', i + 1 === step);
+        });
+        document.querySelectorAll('.step-item').forEach((s, i) => {
+          s.classList.remove('active', 'done');
+          if (i + 1 < step) s.classList.add('done');
+          if (i + 1 === step) s.classList.add('active');
+        });
+      }
+
+      // Step 1 → 2
+      btnNext1.addEventListener('click', () => {
+        if (!agree.checked) return;
+        goTo(2);
+      });
+
+      // Step 2 → 3
+      document.getElementById('btn-next-2').addEventListener('click', () => {
+        const fname = document.getElementById('fname').value.trim();
+        const lname = document.getElementById('lname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        if (!fname || !lname || !email || !phone) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+        // Populate confirmation
+        document.getElementById('c-date').textContent = document.getElementById('date').options[document.getElementById('date').selectedIndex].text;
+        document.getElementById('c-time').textContent = document.getElementById('time').value;
+        const adults = document.getElementById('adults').value;
+        const children = document.getElementById('children').value;
+        document.getElementById('c-guests').textContent = adults + (children !== '0 Children' ? ', ' + children : '');
+        document.getElementById('c-name').textContent = fname + ' ' + lname;
+        document.getElementById('c-email').textContent = email;
+        document.getElementById('c-phone').textContent = phone;
+        const notes = document.getElementById('notes').value.trim();
+        document.getElementById('c-notes').textContent = notes || '—';
+        document.getElementById('c-notes-row').style.display = notes ? 'flex' : 'none';
+        goTo(3);
+      });
+
+      // Back buttons
+      document.getElementById('btn-back-2').addEventListener('click', () => goTo(1));
+      document.getElementById('btn-back-3').addEventListener('click', () => goTo(2));
+
+      // Confirm
+      document.getElementById('btn-confirm').addEventListener('click', () => {
+        const name = document.getElementById('fname').value.trim();
+        document.querySelector('.modal-body').innerHTML = `
+          <div class="success-wrap">
+            <div class="success-icon">✓</div>
+            <h3>Booking Confirmed!</h3>
+            <p>Thank you, ${name}. Your reservation at Ro's Restaurant has been received. We'll send a confirmation to your email shortly.</p>
+            <button class="btn-confirm" onclick="location.reload()">Make Another Booking</button>
+          </div>`;
+        document.querySelector('.stepper').querySelectorAll('.step-item').forEach(s => {
+          s.classList.remove('active');
+          s.classList.add('done');
+        });
+      });
+    </script>
+  </body>
+</html>

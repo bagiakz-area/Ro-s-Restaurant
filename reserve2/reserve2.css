@@ -1,0 +1,130 @@
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500&display=swap");
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+    background-image: url('assets/image/BACKTOP.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    }
+
+    .form-wrap {
+    background-color: #efd7b4;
+    width: 100%;
+    max-width: 800px;
+    padding: 48px 0;
+    border-radius: 15px;
+    }
+
+    /* ── Title ── */
+    .form-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #183E84;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    text-align: center;
+    }
+
+    /* ── Row ── */
+    .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+    padding: 0 40px;
+    }
+
+    /* ── Field Group ── */
+    .field-group {
+    position: relative;
+    }
+
+    .field-group.full {
+    margin-bottom: 32px;
+    padding: 0 40px;
+    }
+
+    /* ── Inputs ── */
+    .field-group input,
+    .field-group textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #183E84;
+    padding: 8px 0 10px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: #5a4a3a;
+    outline: none;
+    transition: border-color 0.3s ease;
+    }
+
+    .field-group input::placeholder,
+    .field-group textarea::placeholder {
+    color: #a89880;
+    font-style: italic;
+    }
+
+    .field-group input:focus,
+    .field-group textarea:focus {
+    border-bottom-color: #7a5c28;
+    }
+
+
+    /* ── Textarea ── */
+    .field-group textarea {
+    resize: vertical;
+    min-height: 160px;
+    line-height: 1.6;
+    }
+
+    /* ── Submit Button ── */
+    .btn-submit {
+    margin-top: 8px;
+    padding: 14px 364px;
+    background: #183E84;
+    color: #ffffff;
+    border: none;
+    font-family: "pridi", serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-submit:hover {
+    background: #365ca3;
+    transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+    transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 576px) {
+    .field-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .form-title {
+        font-size: 1.7rem;
+    }
+    }
