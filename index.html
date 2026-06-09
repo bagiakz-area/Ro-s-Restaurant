@@ -33,33 +33,44 @@
   </head>
   <body>
     <section class="nav-bar">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-2 d-flex justify-content-center">
-            <a class="nav-link-item" href="#offer">Special Offer</a>
-          </div>
-          <div class="col-md-2 d-flex justify-content-center">
-            <a class="nav-link-item" href="#experience">Experience</a>
-          </div>
-          <div class="col-md-4 d-flex justify-content-center">
-            <div class="nav-col-center">
-              <div class="nav-brand">
-                <a href="#home" class="nav-brand-link"
-                  ><img
-                    src="assets/image/rologo.png"
-                    alt="Ro's Restaurant Logo"
-                /></a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 d-flex justify-content-center">
-            <a class="nav-link-item" href="#event">Event</a>
-          </div>
-          <!-- col-md-2: Contact Us -->
-          <div class="col-md-2 d-flex justify-content-center">
-            <a class="nav-link-item" href="#contact">Contact Us</a>
+      <div class="nav-inner">
+        <nav class="nav-links nav-desktop-links" aria-label="Primary left">
+          <a class="nav-link-item" href="#offer">Special Offer</a>
+          <a class="nav-link-item" href="#experience">Experience</a>
+        </nav>
+        <div class="nav-col-center">
+          <div class="nav-brand">
+            <a href="#home" class="nav-brand-link"
+              ><img src="assets/image/rologo.png" alt="Ro's Restaurant Logo"
+            /></a>
           </div>
         </div>
+        <nav class="nav-links nav-desktop-links" aria-label="Primary right">
+          <a class="nav-link-item" href="#event">Event</a>
+          <a class="nav-link-item" href="#contact">Contact Us</a>
+        </nav>
+        <button
+          class="nav-hamburger"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+        >
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+      <div class="nav-mobile-menu" id="mobile-menu" aria-hidden="true">
+        <div class="nav-mobile-overlay" data-nav-close></div>
+        <nav class="nav-mobile-drawer" aria-label="Mobile navigation">
+          <a class="nav-link-item" href="#home">Home</a>
+          <a class="nav-link-item" href="#offer">Special Offer</a>
+          <a class="nav-link-item" href="#experience">Experience</a>
+          <a class="nav-link-item" href="#event">Event</a>
+          <a class="nav-link-item" href="#contact">Contact Us</a>
+          <a class="reserve-btn" href="reserve/reserve.html">Reserve Table</a>
+        </nav>
       </div>
     </section>
     <section class="hero" id="home">
